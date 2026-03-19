@@ -71,9 +71,10 @@ Current planned cards:
 2. Hanzi -> English
 3. English -> Chinese
 4. Region -> list of member provinces
-5. Region -> connections
-6. Region + blank map -> locator map
-7. Locator map -> region name
+5. Members + blank map -> locator map
+6. Region -> connections
+7. Region + blank map -> locator map
+8. Locator map -> region name
 
 The current visual direction is intentionally atlas-like rather than generic Anki:
 

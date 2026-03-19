@@ -14,7 +14,7 @@ OUTPUT_APKG = REPO_ROOT / "out/chinese-regions.apkg"
 MEDIA_DIR = REPO_ROOT / "media/regions"
 MODEL_ID = 1_893_420_011
 DECK_ID = 1_893_420_012
-MODEL_SCHEMA_VERSION = 2
+MODEL_SCHEMA_VERSION = 3
 
 BLANK_MAP_FILENAME = "china_blank_map.svg"
 
@@ -335,6 +335,18 @@ def model_css() -> str:
   width:100%;
   height:auto;
 }
+.member-map-layout{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  margin-top:18px;
+}
+@media (min-width:760px){
+  .member-map-layout{
+    grid-template-columns:1.05fr 0.95fr;
+    align-items:start;
+  }
+}
 .footer{
   margin-top:18px;
   font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
@@ -448,6 +460,57 @@ def make_model() -> genanki.Model:
 </div>
 """
                 + answer_header()
+            ),
+        },
+        {
+            "name": "Members + Blank -> Locator Map",
+            "qfmt": (
+                "{{#Card_BlankMap_HTML}}{{#Card_LocatorMap_HTML}}"
+                + wrap_front(
+                    """
+<div class="eyebrow">Members to Map</div>
+<div class="title">{{english_name}}</div>
+<div class="subtitle">{{mandarin_name}} | {{pinyin_name}}</div>
+<div class="member-map-layout">
+  <div class="answer-panel">
+    <div class="answer-label">Members</div>
+    {{Card_Member_Chips}}
+  </div>
+  <div class="map-frame">
+    <div class="map-caption">Blank Map</div>
+    {{Card_BlankMap_HTML}}
+  </div>
+</div>
+<div class="prompt">Use the member set to place the region on the blank map, then reveal the locator.</div>
+"""
+                )
+                + "{{/Card_LocatorMap_HTML}}{{/Card_BlankMap_HTML}}"
+            ),
+            "afmt": (
+                "{{#Card_BlankMap_HTML}}{{#Card_LocatorMap_HTML}}"
+                + wrap_front(
+                    """
+<div class="eyebrow">Members to Map</div>
+<div class="title">{{english_name}}</div>
+<div class="subtitle">{{mandarin_name}} | {{pinyin_name}}</div>
+<div class="map-stack">
+  <div class="map-frame">
+    <div class="map-caption">Blank Map</div>
+    {{Card_BlankMap_HTML}}
+  </div>
+  <div class="map-frame">
+    <div class="map-caption">Locator Map</div>
+    {{Card_LocatorMap_HTML}}
+  </div>
+</div>
+<div class="answer-panel">
+  <div class="answer-label">Members</div>
+  {{Card_Member_Chips}}
+</div>
+"""
+                    + answer_header()
+                )
+                + "{{/Card_LocatorMap_HTML}}{{/Card_BlankMap_HTML}}"
             ),
         },
         {
