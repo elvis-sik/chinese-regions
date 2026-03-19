@@ -14,9 +14,8 @@ OUTPUT_APKG = REPO_ROOT / "out/chinese-regions.apkg"
 MEDIA_DIR = REPO_ROOT / "media/regions"
 MODEL_ID = 1_893_420_011
 DECK_ID = 1_893_420_012
-MODEL_SCHEMA_VERSION = 1
+MODEL_SCHEMA_VERSION = 2
 
-BLANK_MAP_URL = "https://commons.wikimedia.org/wiki/Special:FilePath/China_blank_map.svg"
 BLANK_MAP_FILENAME = "china_blank_map.svg"
 
 LOCATOR_URL_TO_FILENAME = {
@@ -38,15 +37,8 @@ def split_connection_lines(value: str) -> list[str]:
     return [piece.strip() for piece in (value or "").split("<br>") if piece.strip()]
 
 
-def members_from_connections(value: str) -> str:
-    for line in split_connection_lines(value):
-        if line.startswith("Members:"):
-            return line.removeprefix("Members:").strip()
-    return ""
-
-
-def border_lines_from_connections(value: str) -> list[str]:
-    return [line for line in split_connection_lines(value) if not line.startswith("Members:")]
+def split_csv_like_values(value: str) -> list[str]:
+    return [part.strip() for part in (value or "").split(",") if part.strip()]
 
 
 def html_list(items: list[str], klass: str) -> str:
@@ -54,6 +46,31 @@ def html_list(items: list[str], klass: str) -> str:
         return ""
     lis = "".join(f"<li>{html.escape(item)}</li>" for item in items)
     return f'<ul class="{klass}">{lis}</ul>'
+
+
+def html_member_chips(items: list[str]) -> str:
+    if not items:
+        return ""
+    chips = "".join(f'<span class="member-chip">{html.escape(item)}</span>' for item in items)
+    return f'<div class="member-chips">{chips}</div>'
+
+
+def html_connection_rows(lines: list[str]) -> str:
+    if not lines:
+        return ""
+    rows: list[str] = []
+    for line in lines:
+        if ":" in line:
+            region, neighbors = line.split(":", 1)
+            rows.append(
+                '<div class="connection-row">'
+                f'<div class="connection-region">{html.escape(region.strip())}</div>'
+                f'<div class="connection-neighbors">{html.escape(neighbors.strip())}</div>'
+                "</div>"
+            )
+        else:
+            rows.append(f'<div class="connection-row"><div class="connection-neighbors">{html.escape(line)}</div></div>')
+    return '<div class="connection-rows">' + "".join(rows) + "</div>"
 
 
 def make_map_html(filename: str, alt_text: str, klass: str) -> str:
@@ -83,11 +100,10 @@ def fieldnames_for_model() -> list[str]:
         "locator_map",
         "pinyin_name",
         "english_name",
+        "member_provinces",
         "connections",
-        "Card_Title",
-        "Card_Subtitle",
-        "Card_Members_List",
-        "Card_Connections_List",
+        "Card_Member_Chips",
+        "Card_Connections_HTML",
         "Card_BlankMap_HTML",
         "Card_LocatorMap_HTML",
     ]
@@ -234,6 +250,56 @@ def model_css() -> str:
 .connection-list li{
   margin:0 0 8px;
 }
+.member-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.member-chip{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  border:1px solid rgba(31,106,90,0.18);
+  background:linear-gradient(180deg, rgba(31,106,90,0.14), rgba(255,255,255,0.72));
+  padding:8px 12px;
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  font-size:14px;
+  color:var(--ink);
+}
+.connections-layout{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+  margin-top:18px;
+}
+@media (min-width:760px){
+  .connections-layout{
+    grid-template-columns:0.95fr 1.15fr;
+    align-items:start;
+  }
+}
+.connection-rows{
+  display:grid;
+  gap:10px;
+}
+.connection-row{
+  border-radius:16px;
+  border:1px solid var(--rule);
+  background:rgba(255,255,255,0.62);
+  padding:12px 13px;
+}
+.connection-region{
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--vermillion);
+  margin-bottom:6px;
+}
+.connection-neighbors{
+  font-size:16px;
+  line-height:1.45;
+}
 .map-stack{
   display:grid;
   grid-template-columns:1fr;
@@ -370,9 +436,15 @@ def make_model() -> genanki.Model:
 <div class="eyebrow">Region to Members</div>
 <div class="title">{{english_name}}</div>
 <div class="subtitle">{{mandarin_name}} | {{pinyin_name}}</div>
-<div class="answer-panel">
-  <div class="answer-label">Members</div>
-  {{Card_Members_List}}
+<div class="connections-layout">
+  <div class="map-frame">
+    <div class="map-caption">Locator Map</div>
+    {{Card_LocatorMap_HTML}}
+  </div>
+  <div class="answer-panel">
+    <div class="answer-label">Members</div>
+    {{Card_Member_Chips}}
+  </div>
 </div>
 """
                 + answer_header()
@@ -393,14 +465,14 @@ def make_model() -> genanki.Model:
 <div class="eyebrow">Region to Connections</div>
 <div class="title">{{english_name}}</div>
 <div class="subtitle">{{mandarin_name}} | {{pinyin_name}}</div>
-<div class="meta-grid">
-  <div class="panel">
-    <div class="panel-title">Members</div>
-    {{Card_Members_List}}
+<div class="connections-layout">
+  <div class="map-frame">
+    <div class="map-caption">Locator Map</div>
+    {{Card_LocatorMap_HTML}}
   </div>
   <div class="panel">
     <div class="panel-title">Connections</div>
-    {{Card_Connections_List}}
+    {{Card_Connections_HTML}}
   </div>
 </div>
 """
@@ -498,10 +570,11 @@ def make_model() -> genanki.Model:
 
 
 def note_fields(row: dict[str, str]) -> list[str]:
+    member_provinces = row.get("member_provinces", "")
     connections = row.get("connections", "")
-    members = [part.strip() for part in members_from_connections(connections).split(",") if part.strip()]
-    member_list = html_list(members, "region-list")
-    connection_list = html_list(border_lines_from_connections(connections), "connection-list")
+    members = split_csv_like_values(member_provinces)
+    member_chips = html_member_chips(members)
+    connection_html = html_connection_rows(split_connection_lines(connections))
 
     blank_map_path = MEDIA_DIR / BLANK_MAP_FILENAME
     blank_map_html = ""
@@ -524,11 +597,10 @@ def note_fields(row: dict[str, str]) -> list[str]:
         row.get("locator_map", ""),
         row.get("pinyin_name", ""),
         row.get("english_name", ""),
+        member_provinces,
         connections,
-        row.get("english_name", ""),
-        f"{row.get('mandarin_name', '')} | {row.get('pinyin_name', '')}",
-        member_list,
-        connection_list,
+        member_chips,
+        connection_html,
         blank_map_html,
         locator_map_html,
     ]
