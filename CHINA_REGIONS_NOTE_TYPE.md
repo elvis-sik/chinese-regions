@@ -14,9 +14,10 @@ This is the current note-field contract for the deck.
    Mandarin pinyin with tone marks, for example `Huáběi`.
 5. `english_name`
    English region name, for example `North China`.
-6. `connections`
+6. `member_provinces`
+   Comma-separated provincial-level divisions that belong to the region.
+7. `connections`
    A compact geography field that lists:
-   - which provincial-level divisions are members of the region
    - which provincial-level divisions border which
    - cross-region province borders
    - coasts / seas
@@ -34,9 +35,9 @@ This is the current note-field contract for the deck.
 
 ## Derived Build-Time Fields
 
-The APKG builder derives a few helper fields from the six source fields:
+The APKG builder derives a few helper fields from the source fields:
 
-- a members list parsed from the `Members:` line inside `connections`
+- a members-chip block parsed from `member_provinces`
 - a connection list parsed from the remaining geography lines
 - local `<img>` HTML for the blank map and locator map once media has been fetched
 
