@@ -22,6 +22,24 @@ This is the current note-field contract for the deck.
    - coasts / seas
    - bordering countries where applicable
 
+## Card Templates
+
+1. `Hanzi -> Pinyin`
+2. `Hanzi -> English`
+3. `English -> Chinese`
+4. `Region -> Member Provinces`
+5. `Region -> Connections`
+6. `Region + Blank -> Locator Map`
+7. `Locator Map -> Region Name`
+
+## Derived Build-Time Fields
+
+The APKG builder derives a few helper fields from the six source fields:
+
+- a members list parsed from the `Members:` line inside `connections`
+- a connection list parsed from the remaining geography lines
+- local `<img>` HTML for the blank map and locator map once media has been fetched
+
 ## Current Assumption
 
 The seed data follows the six standard PRC statistical regions used on the English Wikipedia page and includes all relevant provincial-level divisions in that scheme, including Hong Kong, Macau, and Taiwan.
