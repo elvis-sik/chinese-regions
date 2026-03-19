@@ -17,9 +17,15 @@ The region images on the English Wikipedia page below are usable as high-quality
 
 The article's maps resolve to Wikimedia Commons SVG files, not just raster previews. The six region-specific SVGs are all available as original vector files at nominal size `857 x 699`, and there is also a combined overview SVG.
 
+The shared blank-map base requested for every note is:
+
+- [File:China blank map.svg](https://commons.wikimedia.org/wiki/File:China_blank_map.svg)
+
 ## Verified SVG Sources
 
 See [`data/raw/region_image_sources.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/region_image_sources.csv) for the current manifest.
+The first seeded deck rows live in [`data/raw/china_regions_notes_seed.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/china_regions_notes_seed.csv).
+The field contract lives in [`CHINA_REGIONS_NOTE_TYPE.md`](/Users/elvis/Code/anki-studying/chinese-regions/CHINA_REGIONS_NOTE_TYPE.md).
 
 Highlights:
 
