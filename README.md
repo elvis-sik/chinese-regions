@@ -39,10 +39,45 @@ Highlights:
 - `Northeast_China.svg` uses a lighter shade for Inner Mongolian areas that are sometimes included in the Northeast revitalization plan.
 - `East_China.svg` and the combined overview use lighter shading for Taiwan / claimed-but-not-controlled areas.
 
-## Suggested Next Step
+## Build Workflow
 
-If you want, the next pass can:
+Install the deck-building dependencies:
 
-1. download the SVGs into `media/regions/`
-2. normalize filenames and attribution metadata
-3. set up the first note model / deck build script
+```sh
+uv sync --extra deck
+```
+
+Fetch the blank map and region locator SVGs:
+
+```sh
+.venv/bin/python scripts/fetch_region_media.py
+```
+
+Build the Anki package:
+
+```sh
+.venv/bin/python scripts/build_apkg.py
+```
+
+Output:
+
+- `out/chinese-regions.apkg`
+
+## Card Set
+
+Current planned cards:
+
+1. Hanzi -> Pinyin
+2. Hanzi -> English
+3. English -> Chinese
+4. Region -> list of member provinces
+5. Region -> connections
+6. Region + blank map -> locator map
+7. Locator map -> region name
+
+The current visual direction is intentionally atlas-like rather than generic Anki:
+
+- warm paper gradients instead of flat white
+- jade / vermillion / gold accents
+- editorial serif typography for names
+- framed map panels for the image cards
