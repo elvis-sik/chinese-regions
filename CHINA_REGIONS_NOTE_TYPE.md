@@ -29,9 +29,10 @@ This is the current note-field contract for the deck.
 2. `Hanzi -> English`
 3. `English -> Chinese`
 4. `Region -> Member Provinces`
-5. `Region -> Connections`
-6. `Region + Blank -> Locator Map`
-7. `Locator Map -> Region Name`
+5. `Members + Blank -> Locator Map`
+6. `Region -> Connections`
+7. `Region + Blank -> Locator Map`
+8. `Locator Map -> Region Name`
 
 ## Derived Build-Time Fields
 
