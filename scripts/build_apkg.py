@@ -41,13 +41,6 @@ def split_csv_like_values(value: str) -> list[str]:
     return [part.strip() for part in (value or "").split(",") if part.strip()]
 
 
-def html_list(items: list[str], klass: str) -> str:
-    if not items:
-        return ""
-    lis = "".join(f"<li>{html.escape(item)}</li>" for item in items)
-    return f'<ul class="{klass}">{lis}</ul>'
-
-
 def html_member_chips(items: list[str]) -> str:
     if not items:
         return ""
@@ -77,20 +70,28 @@ def make_map_html(filename: str, alt_text: str, klass: str) -> str:
     return f'<img class="{klass}" src="{filename}" alt="{html.escape(alt_text)}">'
 
 
-def collect_media(rows: list[dict[str, str]]) -> list[str]:
-    out: list[str] = []
-    blank = MEDIA_DIR / BLANK_MAP_FILENAME
-    if blank.exists():
-        out.append(str(blank))
+def required_media_paths(rows: list[dict[str, str]]) -> list[Path]:
+    out: list[Path] = [MEDIA_DIR / BLANK_MAP_FILENAME]
     for row in rows:
         locator_url = (row.get("locator_map") or "").strip()
         filename = LOCATOR_URL_TO_FILENAME.get(locator_url)
         if not filename:
             continue
-        path = MEDIA_DIR / filename
-        if path.exists():
-            out.append(str(path))
+        out.append(MEDIA_DIR / filename)
     return sorted(dict.fromkeys(out))
+
+
+def ensure_required_media(rows: list[dict[str, str]]) -> list[str]:
+    required = required_media_paths(rows)
+    missing = [path for path in required if not path.exists()]
+    if missing:
+        missing_list = "\n".join(f"- {path.relative_to(REPO_ROOT)}" for path in missing)
+        raise SystemExit(
+            "Missing required media files.\n"
+            "Run `scripts/fetch_region_media.py` first.\n"
+            f"{missing_list}"
+        )
+    return [str(path) for path in required]
 
 
 def fieldnames_for_model() -> list[str]:
@@ -216,17 +217,6 @@ def model_css() -> str:
   background:linear-gradient(90deg, transparent, var(--gold), transparent);
   margin:18px 0;
 }
-.meta-grid{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:16px;
-  margin-top:18px;
-}
-@media (min-width:700px){
-  .meta-grid{
-    grid-template-columns:1fr 1fr;
-  }
-}
 .panel{
   border:1px solid var(--rule);
   border-radius:18px;
@@ -240,15 +230,6 @@ def model_css() -> str:
   letter-spacing:0.12em;
   color:var(--jade);
   margin:0 0 10px;
-}
-.region-list,
-.connection-list{
-  margin:0;
-  padding-left:18px;
-}
-.region-list li,
-.connection-list li{
-  margin:0 0 8px;
 }
 .member-chips{
   display:flex;
@@ -678,7 +659,7 @@ def build_deck() -> None:
         deck.add_note(note)
 
     package = genanki.Package(deck)
-    package.media_files = collect_media(rows)
+    package.media_files = ensure_required_media(rows)
     OUTPUT_APKG.parent.mkdir(parents=True, exist_ok=True)
     package.write_to_file(str(OUTPUT_APKG))
     print(f"wrote {OUTPUT_APKG}")
