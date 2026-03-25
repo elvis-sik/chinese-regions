@@ -2,7 +2,7 @@
 
 ## Scope
 
-These instructions apply to `/Users/elvis/Code/anki-studying/chinese-regions`.
+These instructions apply to this repository root.
 
 ## Repo Goal
 
@@ -18,3 +18,4 @@ Current focus:
 
 - Commit often when making meaningful progress.
 - Push regularly once a remote exists.
+- Prefer signed commits when local Git signing is already configured.

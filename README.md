@@ -1,6 +1,12 @@
-# chinese-regions
+# China Regions
 
-This repository is a scaffold for an Anki deck about the standard PRC statistical regions of China:
+An Anki deck for learning the standard PRC statistical regions of China through Hanzi, pinyin, English names, member provinces, and crisp SVG map recall.
+
+Published deck:
+
+- [AnkiWeb shared deck](https://ankiweb.net/shared/info/159990073?cb=1774480687353)
+
+The deck covers:
 
 - North China
 - East China
@@ -9,13 +15,20 @@ This repository is a scaffold for an Anki deck about the standard PRC statistica
 - Northeast China
 - Northwest China
 
-## Status
+## Why This Deck Works
 
-The region images on the English Wikipedia page below are usable as high-quality SVG sources:
+- atlas-style locator maps instead of generic prompts
+- clean member-province grouping
+- compact border/coast/country cues
+- bold Hanzi / pinyin / English recognition in both directions
+
+## Sources
+
+The deck is based on the region definitions and map files used on:
 
 - [List of regions of China](https://en.wikipedia.org/wiki/List_of_regions_of_China)
 
-The article's maps resolve to Wikimedia Commons SVG files, not just raster previews. The six region-specific SVGs are all available as original vector files at nominal size `857 x 699`, and there is also a combined overview SVG.
+The article's maps resolve to Wikimedia Commons SVG files, not just raster previews. The six region-specific SVGs are available as original vector files at nominal size `857 x 699`, and there is also a combined overview SVG.
 
 The shared blank-map base requested for every note is:
 
@@ -23,9 +36,9 @@ The shared blank-map base requested for every note is:
 
 ## Verified SVG Sources
 
-See [`data/raw/region_image_sources.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/region_image_sources.csv) for the current manifest.
-The first seeded deck rows live in [`data/raw/china_regions_notes_seed.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/china_regions_notes_seed.csv).
-The field contract lives in [`CHINA_REGIONS_NOTE_TYPE.md`](/Users/elvis/Code/anki-studying/chinese-regions/CHINA_REGIONS_NOTE_TYPE.md).
+See [`data/raw/region_image_sources.csv`](data/raw/region_image_sources.csv) for the current manifest.
+The seed note rows live in [`data/raw/china_regions_notes_seed.csv`](data/raw/china_regions_notes_seed.csv).
+The note-field and card contract lives in [`CHINA_REGIONS_NOTE_TYPE.md`](CHINA_REGIONS_NOTE_TYPE.md).
 
 Highlights:
 
@@ -63,9 +76,11 @@ Output:
 
 - `out/chinese-regions.apkg`
 
+The builder expects the required SVG files to be present locally and will stop with a clear error if the fetch step has not been run.
+
 ## Card Set
 
-Current planned cards:
+Current live cards:
 
 1. Hanzi -> Pinyin
 2. Hanzi -> English
@@ -76,9 +91,16 @@ Current planned cards:
 7. Region + blank map -> locator map
 8. Locator map -> region name
 
-The current visual direction is intentionally atlas-like rather than generic Anki:
+The visual direction is intentionally atlas-like rather than generic Anki:
 
 - warm paper gradients instead of flat white
 - jade / vermillion / gold accents
 - editorial serif typography for names
 - framed map panels for the image cards
+
+## Repo Layout
+
+- `data/raw/` contains the reviewed seed rows and media-source manifest
+- `scripts/fetch_region_media.py` downloads the required SVG files from Wikimedia Commons
+- `scripts/build_apkg.py` builds the final `.apkg`
+- `media/regions/` is a generated local cache for deck media and is not committed

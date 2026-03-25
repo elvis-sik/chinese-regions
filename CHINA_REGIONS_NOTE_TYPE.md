@@ -48,5 +48,5 @@ The seed data follows the six standard PRC statistical regions used on the Engli
 
 ## Source Files
 
-- [`data/raw/china_regions_notes_seed.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/china_regions_notes_seed.csv)
-- [`data/raw/region_image_sources.csv`](/Users/elvis/Code/anki-studying/chinese-regions/data/raw/region_image_sources.csv)
+- [`data/raw/china_regions_notes_seed.csv`](data/raw/china_regions_notes_seed.csv)
+- [`data/raw/region_image_sources.csv`](data/raw/region_image_sources.csv)
