@@ -6,6 +6,16 @@ Published deck:
 
 - [AnkiWeb shared deck](https://ankiweb.net/shared/info/159990073?cb=1774480687353)
 
+## Card Preview
+
+Representative cards from the live deck templates:
+
+![China Regions card showcase](docs/screenshots/china-regions-card-showcase.png)
+
+![China Regions connections card](docs/screenshots/china-regions-connections-card.png)
+
+For an AnkiWeb-ready HTML snippet that hotlinks these GitHub-hosted screenshots, see [`docs/ankiweb-shared-description.html`](docs/ankiweb-shared-description.html).
+
 The deck covers:
 
 - North China
@@ -103,4 +113,5 @@ The visual direction is intentionally atlas-like rather than generic Anki:
 - `data/raw/` contains the reviewed seed rows and media-source manifest
 - `scripts/fetch_region_media.py` downloads the required SVG files from Wikimedia Commons
 - `scripts/build_apkg.py` builds the final `.apkg`
+- `scripts/render_card_previews.py` renders local HTML showcase pages for screenshot capture
 - `media/regions/` is a generated local cache for deck media and is not committed
