@@ -22,36 +22,17 @@ MODEL = make_model()
 
 PREVIEW_PAGES = [
     {
-        "filename": "showcase-main.html",
+        "filename": "map-to-name-pair.html",
         "cards": [
             {
                 "note": "North China",
                 "template": "Locator Map -> Region Name",
                 "side": "front",
-                "slot_class": "half",
             },
             {
                 "note": "North China",
                 "template": "Locator Map -> Region Name",
                 "side": "back",
-                "slot_class": "half",
-            },
-            {
-                "note": "South Central China",
-                "template": "Members + Blank -> Locator Map",
-                "side": "back",
-                "slot_class": "full",
-            },
-        ],
-    },
-    {
-        "filename": "showcase-connections.html",
-        "cards": [
-            {
-                "note": "Northwest China",
-                "template": "Region -> Connections",
-                "side": "back",
-                "slot_class": "single",
             }
         ],
     },
@@ -78,14 +59,6 @@ body{
 .slot{
   min-width:0;
 }
-.slot.full,
-.slot.single{
-  grid-column:1 / -1;
-}
-.slot.single{
-  max-width:980px;
-  margin:0 auto;
-}
 .preview-frame{
   border-radius:34px;
   overflow:hidden;
@@ -102,13 +75,6 @@ body{
   }
   .showcase{
     grid-template-columns:1fr;
-  }
-  .slot,
-  .slot.full,
-  .slot.single{
-    grid-column:auto;
-    max-width:none;
-    margin:0;
   }
 }
 """.strip()
@@ -164,7 +130,7 @@ def page_html(
         note = notes[card["note"]]
         rendered = render_template(template["qfmt" if card["side"] == "front" else "afmt"], note)
         rendered_cards.append(
-            f'<div class="slot {card["slot_class"]}"><div class="preview-frame"><div class="card">{rendered}</div></div></div>'
+            f'<div class="slot"><div class="preview-frame"><div class="card">{rendered}</div></div></div>'
         )
     return f"""<!doctype html>
 <html lang="en">
