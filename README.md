@@ -1,4 +1,4 @@
-# China Regions
+# Regions of China: Hanzi, Pinyin, English, and Maps
 
 An Anki deck for learning the standard PRC statistical regions of China through Hanzi, pinyin, English names, member provinces, and crisp SVG map recall.
 
@@ -8,13 +8,11 @@ Published deck:
 
 ## Card Preview
 
-Representative cards from the live deck templates:
+Front and back of the deck's main map-to-name card:
 
-![China Regions card showcase](docs/screenshots/china-regions-card-showcase.png)
+![Regions of China map-to-name card pair](docs/screenshots/china-regions-map-to-name-pair.png)
 
-![China Regions connections card](docs/screenshots/china-regions-connections-card.png)
-
-For an AnkiWeb-ready HTML snippet that hotlinks these GitHub-hosted screenshots, see [`docs/ankiweb-shared-description.html`](docs/ankiweb-shared-description.html).
+For an AnkiWeb-ready HTML snippet that hotlinks this GitHub-hosted screenshot, see [`docs/ankiweb-shared-description.html`](docs/ankiweb-shared-description.html).
 
 The deck covers:
 
@@ -24,13 +22,6 @@ The deck covers:
 - Southwest China
 - Northeast China
 - Northwest China
-
-## Why This Deck Works
-
-- atlas-style locator maps instead of generic prompts
-- clean member-province grouping
-- compact border/coast/country cues
-- bold Hanzi / pinyin / English recognition in both directions
 
 ## Sources
 
@@ -44,24 +35,6 @@ The shared blank-map base requested for every note is:
 
 - [File:China blank map.svg](https://commons.wikimedia.org/wiki/File:China_blank_map.svg)
 
-## Verified SVG Sources
-
-See [`data/raw/region_image_sources.csv`](data/raw/region_image_sources.csv) for the current manifest.
-The seed note rows live in [`data/raw/china_regions_notes_seed.csv`](data/raw/china_regions_notes_seed.csv).
-The note-field and card contract lives in [`CHINA_REGIONS_NOTE_TYPE.md`](CHINA_REGIONS_NOTE_TYPE.md).
-
-Highlights:
-
-- The main six region maps are available as SVG and appear suitable for deck use.
-- A combined [`Regions_of_China.svg`](https://commons.wikimedia.org/wiki/File:Regions_of_China.svg) is also available for overview cards.
-- Wikimedia also hosts separate `China location map - ...` PNG files, but those are lower-value fallback assets because they are raster only.
-
-## Caveats
-
-- `Northwest_China.svg` currently carries a Commons update note about disputed-area rendering around Aksai Chin, so it is usable but worth one manual visual review before final deck export.
-- `Northeast_China.svg` uses a lighter shade for Inner Mongolian areas that are sometimes included in the Northeast revitalization plan.
-- `East_China.svg` and the combined overview use lighter shading for Taiwan / claimed-but-not-controlled areas.
-
 ## Build Workflow
 
 Install the deck-building dependencies:
@@ -73,13 +46,13 @@ uv sync --extra deck
 Fetch the blank map and region locator SVGs:
 
 ```sh
-.venv/bin/python scripts/fetch_region_media.py
+uv run python scripts/fetch_region_media.py
 ```
 
 Build the Anki package:
 
 ```sh
-.venv/bin/python scripts/build_apkg.py
+uv run python scripts/build_apkg.py
 ```
 
 Output:
