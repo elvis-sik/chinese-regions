@@ -6,3 +6,7 @@ __pycache__/
 out/
 media/regions/*
 !media/regions/.gitkeep
+
+# Local Anki exports used while repairing adjacent China geography notes.
+Selected Notes.txt
+province_missing_fields.csv
