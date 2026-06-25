@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Any
 
 from build_apkg import (
     MEDIA_DIR,
@@ -20,7 +21,7 @@ FIELD_RE = re.compile(r"{{([A-Za-z0-9_]+)}}")
 MODEL = make_model()
 
 
-PREVIEW_PAGES = [
+PREVIEW_PAGES: list[dict[str, Any]] = [
     {
         "filename": "map-to-name-pair.html",
         "cards": [
