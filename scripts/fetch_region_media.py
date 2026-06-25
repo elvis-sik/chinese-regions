@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import csv
+import gzip
+import shutil
 import time
 from pathlib import Path
 
@@ -11,6 +13,7 @@ import requests
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_CSV = REPO_ROOT / "data/raw/region_image_sources.csv"
 MEDIA_DIR = REPO_ROOT / "media/regions"
+BUNDLED_MEDIA_DIR = REPO_ROOT / "data/raw/region-media"
 
 TITLE_TO_FILENAME = {
     "China_blank_map.svg": "china_blank_map.svg",
@@ -71,10 +74,24 @@ def download(url: str, dest: Path) -> None:
     raise RuntimeError(f"Failed to download {url}")
 
 
+def restore_bundled_asset(title: str, dest: Path) -> bool:
+    filename = TITLE_TO_FILENAME.get(title)
+    if filename is None:
+        return False
+    bundled_path = BUNDLED_MEDIA_DIR / f"{filename}.gz"
+    if not bundled_path.exists():
+        return False
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with gzip.open(bundled_path, "rb") as source, dest.open("wb") as target:
+        shutil.copyfileobj(source, target)
+    return True
+
+
 def main() -> int:
     rows = read_rows(SOURCE_CSV)
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     downloaded = 0
+    restored = 0
     skipped = 0
 
     for row in rows:
@@ -90,12 +107,17 @@ def main() -> int:
             print(f"skip  {dest.name}")
             continue
 
+        if restore_bundled_asset(title, dest):
+            restored += 1
+            print(f"restore {dest.name}")
+            continue
+
         print(f"fetch {dest.name}")
         download(redirect_url_for_title(title), dest)
         downloaded += 1
         time.sleep(1.0)
 
-    print(f"done: downloaded={downloaded} skipped={skipped}")
+    print(f"done: restored={restored} downloaded={downloaded} skipped={skipped}")
     return 0
 
 
