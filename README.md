@@ -2,7 +2,6 @@
 
 [![Anki Workbench](https://github.com/elvis-sik/chinese-regions/actions/workflows/anki-workbench.yml/badge.svg)](https://github.com/elvis-sik/chinese-regions/actions/workflows/anki-workbench.yml)
 ![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
-![Anki Workbench 0.4.0](https://img.shields.io/badge/anki--addon--workbench-0.4.0-informational)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 An Anki deck for learning the standard PRC statistical regions of China through Hanzi, pinyin, English names, member provinces, and crisp SVG map recall.
@@ -14,12 +13,6 @@ Published deck:
 - [AnkiWeb shared deck](https://ankiweb.net/shared/info/159990073?cb=1774480687353)
 
 ## Card previews
-
-The README screenshot is generated from the built APKG in a disposable Anki profile:
-
-```sh
-uv run --extra dev python scripts/capture_readme_screenshot.py
-```
 
 Front and back of the deck's main map-to-name card:
 
