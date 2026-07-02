@@ -107,6 +107,7 @@ def fieldnames_for_model() -> list[str]:
         "Card_Connections_HTML",
         "Card_BlankMap_HTML",
         "Card_LocatorMap_HTML",
+        "Wikipedia",
     ]
 
 
@@ -458,7 +459,36 @@ def model_css() -> str:
   letter-spacing:0.04em;
   color:var(--muted);
 }
-""".strip()
+.wiki-panel{
+  margin-top:18px;
+  border:1px solid rgba(141,20,36,0.18);
+  border-radius:20px;
+  background:
+    linear-gradient(180deg, rgba(255,250,243,0.78), rgba(250,238,225,0.72)),
+    linear-gradient(135deg, rgba(47,106,88,0.06), rgba(213,177,95,0.12));
+  padding:16px 16px 14px;
+  box-shadow:inset 0 0 0 1px rgba(213,177,95,0.22);
+}
+.wiki-frame{
+  display:block;
+  width:100%;
+  height:420px;
+  border:1px solid rgba(141,20,36,0.16);
+  border-radius:16px;
+  background:rgba(255,250,243,0.92);
+}
+.wiki-link{
+  display:inline-block;
+  margin-top:10px;
+  font-family:"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
+  font-size:14px;
+  color:var(--lacquer);
+  text-decoration:none;
+}
+.wiki-link:hover{
+  text-decoration:underline;
+}
+""".strip() + "\n"
 
 
 def wrap_front(inner: str) -> str:
@@ -467,6 +497,13 @@ def wrap_front(inner: str) -> str:
 
 def answer_header() -> str:
     return """
+{{#Wikipedia}}
+<div class="wiki-panel">
+  <div class="panel-title">Wikipedia</div>
+  <iframe class="wiki-frame" src="{{Wikipedia}}"></iframe>
+  <a class="wiki-link" href="{{Wikipedia}}">Open in browser</a>
+</div>
+{{/Wikipedia}}
 <div class="footer">{{english_name}} | {{mandarin_name}} | {{pinyin_name}}</div>
 """.strip()
 
@@ -728,6 +765,9 @@ def make_model() -> genanki.Model:
         },
     ]
 
+    for template in templates:
+        template["afmt"] = str(template["afmt"]).rstrip("\n") + "\n"
+
     return genanki.Model(
         model_id=MODEL_ID,
         name=f"China Regions v{MODEL_SCHEMA_VERSION}",
@@ -771,6 +811,7 @@ def note_fields(row: dict[str, str]) -> list[str]:
         connection_html,
         blank_map_html,
         locator_map_html,
+        row.get("Wikipedia", ""),
     ]
 
 

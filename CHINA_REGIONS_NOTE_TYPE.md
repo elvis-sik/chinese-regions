@@ -22,6 +22,9 @@ This is the current note-field contract for the deck.
    - cross-region province borders
    - coasts / seas
    - bordering countries where applicable
+8. `Wikipedia`
+   The English Wikipedia article URL used for the optional answer-side reference
+   panel.
 
 ## Card Templates
 
@@ -41,6 +44,7 @@ The APKG builder derives a few helper fields from the source fields:
 - a members-chip block parsed from `member_provinces`
 - a connection list parsed from the remaining geography lines
 - local `<img>` HTML for the blank map and locator map once media has been fetched
+- an optional answer-side Wikipedia reference panel when `Wikipedia` is present
 
 ## Current Assumption
 
