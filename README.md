@@ -1,12 +1,25 @@
 # Regions of China: Hanzi, Pinyin, English, and Maps
 
+[![Anki Workbench](https://github.com/elvis-sik/chinese-regions/actions/workflows/anki-workbench.yml/badge.svg)](https://github.com/elvis-sik/chinese-regions/actions/workflows/anki-workbench.yml)
+![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue)
+![Anki Workbench 0.4.0](https://img.shields.io/badge/anki--addon--workbench-0.4.0-informational)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 An Anki deck for learning the standard PRC statistical regions of China through Hanzi, pinyin, English names, member provinces, and crisp SVG map recall.
+
+![Regions of China card preview](docs/screenshots/readme-preview.png)
 
 Published deck:
 
 - [AnkiWeb shared deck](https://ankiweb.net/shared/info/159990073?cb=1774480687353)
 
-## Card Preview
+## Card previews
+
+The README screenshot is generated from the built APKG in a disposable Anki profile:
+
+```sh
+uv run --extra dev python scripts/capture_readme_screenshot.py
+```
 
 Front and back of the deck's main map-to-name card:
 
@@ -88,3 +101,7 @@ The visual direction is intentionally atlas-like rather than generic Anki:
 - `scripts/build_apkg.py` builds the final `.apkg`
 - `scripts/render_card_previews.py` renders local HTML showcase pages for screenshot capture
 - `media/regions/` is a generated local cache for deck media and is not committed
+
+## License
+
+Repository code and documentation are MIT licensed. Map assets and source facts keep their upstream licenses and attribution requirements as documented in the data manifests.
